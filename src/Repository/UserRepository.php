@@ -6,9 +6,13 @@ namespace Accounts\Repository;
 
 use Accounts\Entity\User;
 use DateTime;
+use Exception;
 
 class UserRepository extends Repository
 {
+    /**
+     * @throws Exception
+     */
     public function getTurnover(DateTime $dateObject, int $id): array
     {
         $year = $dateObject->format('Y');
@@ -26,8 +30,6 @@ class UserRepository extends Repository
                 ->modify('-1 second')
             ;
 
-//            echo $monthStart->format('Y-m-d H:i:s') . ' - '
-//                . $monthEnd->format('Y-m-d H:i:s') . "\n";
             $parameters = [
                 'id' => $id,
                 'from' => $monthStart->format('Y-m-d H:i:s'),
@@ -75,10 +77,10 @@ ORDER BY u.id
 #    SUM(withdrawals.amount) AS withdrawals,
 #     fulfills.account_to,
 #    SUM(fulfills.amount) AS fulfills,
-    IFNULL(SUM(
-            CAST(fulfills.amount AS SIGNED)
-            - withdrawals.amount
-    ), 0)
+    SUM(
+            CAST(IFNULL(fulfills.amount, 0) AS SIGNED)
+            - IFNULL(withdrawals.amount, 0)
+    )
         AS turnover
 FROM users u
 INNER JOIN user_accounts ua on u.id = ua.user_id

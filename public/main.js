@@ -1,75 +1,23 @@
+import { userSelector } from "/js/selector.js";
+import { getTableHtml, htmlToDomElement } from "/js/getTable.js";
+import { appendToDom } from "/js/appendToDom.js";
+import { getId } from "/js/getUserId.js";
+import { UrlMachine } from "./js/UrlMachine.js";
+
 document.addEventListener('DOMContentLoaded', function () {
-    let App = {};
-
-    App.userSelector = document.querySelector('#users');
-
-    let div = document.createElement('div');
-
-    App.getTable = (turnovers) => {
-        let table = `
-        <table class="table table-narrow table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Month</th>
-                    <th scope="col">Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-            `;
-
-        for (const turnover of turnovers) {
-            console.log(turnover);
-            table += `
-            <tr>
-                <td>${turnover.month}</td>
-                <td>${turnover.value}</td>
-            </tr>
-            `;
-        }
-
-        table += `
-                </tbody>
-            </table>
-        `;
-
-        div.innerHTML = table.trim();
-        App.table = div.firstChild;
-
-        return App.table;
-    };
-
-    App.getUserId = (e) => {
-        let id = e.target.id * 1;
-
-        if (! Number.isInteger(id))
-        {
-            return;
-        }
-
-        App.fetchTurnovers(id);
-    }
-
-    App.userSelector.addEventListener('click', App.getUserId);
-
-    App.draw = (data) => {
-        let container = document.querySelector('#dropdown-container');
-        let table = document.querySelector('.table');
-        if (table) {
-            table.remove();
-        }
-        container.after(App.getTable(data));
-
-    };
-
-
-    App.fetchTurnovers = (id) => {
-        let url = 'http://localhost?action=turnovers&id=' + id;
-        const turnovers = fetch(url)
+    let createUpdateTurnoversTable = (e) => {
+        let id = getId(e);
+        let machine = Object.create(UrlMachine);
+        fetch(machine.getUrl(id))
             .then(response => response.json())
-            .then(result => {
-                App.draw(result);
-            });
-
+            .then(result => process(result) );
     };
 
+    userSelector.addEventListener('click', createUpdateTurnoversTable);
+
+    let process = (result) => {
+        let tableHtml = getTableHtml(result);
+        let tableElement = htmlToDomElement(tableHtml);
+        appendToDom(tableElement);
+    };
 });

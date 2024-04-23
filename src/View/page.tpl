@@ -10,7 +10,7 @@
 
 
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="main.js"></script>
+    <script type="module" src="main.js"></script>
 
 </head>
 <body>
