@@ -1,1 +1,0 @@
-export let userSelector = document.querySelector('#users');
