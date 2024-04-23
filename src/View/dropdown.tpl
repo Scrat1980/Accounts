@@ -1,4 +1,4 @@
-<div class="btn-group">
+<div class="btn-group" id="dropdown-container">
     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         User
     </button>

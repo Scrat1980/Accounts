@@ -33,7 +33,11 @@ class UserRepository extends Repository
                 'from' => $monthStart->format('Y-m-d H:i:s'),
                 'to' => $monthEnd->format('Y-m-d H:i:s'),
             ];
-            $turnover[] = $this->getMonthlyTurnover($parameters);
+            $turnover[] = [
+                'month' => $monthCounter->format('F'),
+                'value' => $this->getMonthlyTurnover($parameters)
+                [0]->turnover ?? '0.00',
+            ];
 
             $monthCounter->modify('+1 month');
         }
