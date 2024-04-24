@@ -14,6 +14,7 @@
 
 </head>
 <body>
-
+    <?php $year = (new DateTime())->format('Y'); ?>
+    <h1>Balances for the year <?= $year ?></h1>
 </body>
 </html>

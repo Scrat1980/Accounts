@@ -21,7 +21,6 @@ class SiteController
 
         include dirname(__DIR__, 1) . '/View/page.tpl';
         include dirname(__DIR__, 1) . '/View/dropdown.tpl';
-//        include dirname(__DIR__, 1) . '/View/table.tpl';
 
     }
 
